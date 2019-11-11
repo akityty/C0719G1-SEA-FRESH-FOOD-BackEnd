@@ -5,20 +5,20 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  @Email
+//  @Email
   private String email;
-  @Size(min = 6, max = 20)
+//  @Size(min = 6, max = 20)
   private String password;
 
   public User() {
   }
 
-  public User(@Email String email, @Size(min = 6, max = 20) String password) {
+  public User(String email, String password) {
     this.email = email;
     this.password = password;
   }
