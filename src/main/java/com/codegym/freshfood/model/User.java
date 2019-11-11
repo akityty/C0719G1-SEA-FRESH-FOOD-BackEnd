@@ -3,10 +3,12 @@ package com.codegym.freshfood.model;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
-@Table(name = "users")
-public class user {
+@Table(name = "user")
+public class User implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
@@ -15,10 +17,18 @@ public class user {
   @Size(min = 6, max = 20)
   private String password;
 
-  public user() {
+  @ManyToMany
+  @JoinTable(
+          name = "user_role",
+          joinColumns = @JoinColumn(name = "user_id"),
+          inverseJoinColumns = @JoinColumn(name = "role_id")
+  )
+  private Set<Role> roles;
+
+  public User() {
   }
 
-  public user(@Email String email, @Size(min = 6, max = 20) String password) {
+  public User(@Email String email, @Size(min = 6, max = 20) String password) {
     this.email = email;
     this.password = password;
   }
