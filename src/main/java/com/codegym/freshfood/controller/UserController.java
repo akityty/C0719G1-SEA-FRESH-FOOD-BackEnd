@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class UserController {
         return new ResponseEntity<List<User>>(users, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/save" , method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/api" , method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> addMember(@RequestBody User user) {
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -41,5 +42,13 @@ public class UserController {
         }else{
             return new ResponseEntity<Optional<User>>(user,HttpStatus.OK);
         }
+    }
+
+    @RequestMapping(value = "api/checkLogin", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> checkLogin(@RequestParam String email,@RequestParam String password) {
+        Long id = userService.checkLogin(email, password);
+        if (id == -1L) return new ResponseEntity<Long>(HttpStatus.NOT_FOUND);
+        else if (id == 0L) return new ResponseEntity<Long>(HttpStatus.BAD_REQUEST);
+        else return new ResponseEntity<Long>(id, HttpStatus.OK);
     }
 }

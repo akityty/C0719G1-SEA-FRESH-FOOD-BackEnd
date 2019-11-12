@@ -15,4 +15,5 @@ public interface UserService {
 
     Optional<User> findById(Long id);
 
+    Long checkLogin(String email, String password);
 }

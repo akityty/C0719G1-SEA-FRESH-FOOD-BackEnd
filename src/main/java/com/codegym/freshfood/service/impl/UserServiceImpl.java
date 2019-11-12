@@ -28,4 +28,17 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
+    @Override
+    public Long checkLogin(String email, String password) {
+        List<User> users = findAll();
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                if (user.getPassword().equals(password))
+                    return user.getId(); //ok
+                return 0L; //email dung pass sai
+            }
+        }
+        return -1L; //email sai
+    }
+
 }
