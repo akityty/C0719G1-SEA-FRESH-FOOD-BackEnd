@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" th:action="@{/register}">
+    <table>
+        <tr>
+            <td>User Name</td>
+            <td><input name="email" type="text"></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td><input name="password" type="password"></td>
+        </tr>
+        <tr>
+            <select id="" name="role">
+                <option value="ROLE_ADMIN">Admin</option>
+                <option value="ROLE_MEMBER">Member</option>
+            </select>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Registy"></td>
+        </tr>
+        <tr>
+            <td><a href="/home">Go Home</a></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
