@@ -1,7 +1,6 @@
 package com.codegym.freshfood.controller;
 
 import com.codegym.freshfood.model.User;
-import com.codegym.freshfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +15,7 @@ import java.util.Optional;
 @RestController
 @ResponseBody
 public class UserController {
-    @Autowired
+   /* @Autowired
     private UserService userService;
 
     @RequestMapping(value = "/api", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,5 +49,5 @@ public class UserController {
         if (id == -1L) return new ResponseEntity<Long>(HttpStatus.NOT_FOUND);
         else if (id == 0L) return new ResponseEntity<Long>(HttpStatus.BAD_REQUEST);
         else return new ResponseEntity<Long>(id, HttpStatus.OK);
-    }
+    }*/
 }
