@@ -1,6 +1,6 @@
-package com.codegym.freshfood.jwt;
+package com.codegym.freshfood.security.jwt;
 
-import com.codegym.freshfood.service.UserDetailsServiceImpl;
+import com.codegym.freshfood.security.services.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +35,9 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
         	
             String jwt = getJwt(request);
             if (jwt!=null && tokenProvider.validateJwtToken(jwt)) {
-               /* String username = tokenProvider.getUserNameFromJwtToken(jwt);*/
-                String email = tokenProvider.getUserNameFromJwtToken(jwt);
-               /* UserDetails userDetails = userDetailsService.loadUserByUsername(username);*/
-                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                String username = tokenProvider.getUserNameFromJwtToken(jwt);
+
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication
                 		= new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

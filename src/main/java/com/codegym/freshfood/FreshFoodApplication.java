@@ -1,6 +1,6 @@
 package com.codegym.freshfood;
 
-import com.codegym.freshfood.service.UserDetailsServiceImpl;
+import com.codegym.freshfood.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

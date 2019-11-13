@@ -12,7 +12,7 @@ public class TestRestAPIs {
 	public String userAccess() {
 		return ">>> User Contents!";
 	}
-
+	
 	@GetMapping("/api/test/admin")
 	@PreAuthorize("hasRole('ADMIN')")
 	public String adminAccess() {

@@ -1,9 +1,8 @@
-package com.codegym.freshfood.service;
+package com.codegym.freshfood.security.services;
 
 import com.codegym.freshfood.model.User;
 import com.codegym.freshfood.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,12 +17,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String email)
+    public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
-
-        User user = userRepository.findByEmail(email)
-                	.orElseThrow(() ->
-                        new UsernameNotFoundException("User Not Found with -> username or email : " + email)
+    	
+        User user = userRepository.findByUsername(username)
+                	.orElseThrow(() -> 
+                        new UsernameNotFoundException("User Not Found with -> username or email : " + username)
         );
 
         return UserPrinciple.build(user);
