@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-//@CrossOrigin("*")
+@CrossOrigin("*")
 @RestController
 @ResponseBody
 public class UserController {
