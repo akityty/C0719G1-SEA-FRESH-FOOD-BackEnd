@@ -10,12 +10,14 @@ public class TestRestAPIs {
 	@GetMapping("/api/test/user")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public String userAccess() {
+		System.out.println("user");
 		return ">>> User Contents!";
 	}
 	
 	@GetMapping("/api/test/admin")
 	@PreAuthorize("hasRole('ADMIN')")
 	public String adminAccess() {
+		System.out.println("admin");
 		return ">>> Admin Contents";
 	}
 }

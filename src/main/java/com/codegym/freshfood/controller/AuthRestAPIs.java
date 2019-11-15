@@ -63,7 +63,9 @@ public class AuthRestAPIs {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
+    public ResponseEntity<String> registerUser(@RequestBody SignUpForm signUpRequest) {
+        System.out.println("ok");
+
         if(userRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity<String>("Fail -> Username is already taken!",
                     HttpStatus.BAD_REQUEST);
@@ -87,15 +89,14 @@ public class AuthRestAPIs {
 	    			Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
 	                .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
 	    			roles.add(adminRole);
-	    			
 	    			break;
 	    		default:
 	        		Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
 	                .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-	        		roles.add(userRole);        			
+	        		roles.add(userRole);
         	}
         });
-        
+
         user.setRoles(roles);
         userRepository.save(user);
 
