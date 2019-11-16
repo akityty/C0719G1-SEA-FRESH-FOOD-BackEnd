@@ -11,6 +11,7 @@ import com.codegym.freshfood.repository.UserRepository;
 import com.codegym.freshfood.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -46,34 +48,29 @@ public class AuthRestAPIs {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
-
+        System.out.println("ok");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
                         loginRequest.getPassword()
                 )
         );
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtProvider.generateJwtToken(authentication);
-      UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-      return ResponseEntity.ok(new JwtResponse(jwt ,userDetails.getUsername(), userDetails.getAuthorities()));
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<String> registerUser(@RequestBody SignUpForm signUpRequest) {
-        System.out.println("ok");
-
-        if(userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity<String>("Fail -> Username is already taken!",
-                    HttpStatus.BAD_REQUEST);
+    @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity<String>("Fail -> Email is already in use!",
-                    HttpStatus.BAD_REQUEST);
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
         // Creating user's account
@@ -82,24 +79,44 @@ public class AuthRestAPIs {
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
-
-        strRoles.forEach(role -> {
-        	switch(role) {
-	    		case "admin":
-	    			Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
-	                .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-	    			roles.add(adminRole);
-	    			break;
-	    		default:
-	        		Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-	                .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-	        		roles.add(userRole);
-        	}
-        });
+        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+        roles.add(userRole);
 
         user.setRoles(roles);
         userRepository.save(user);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
-        return ResponseEntity.ok().body("User registered successfully!");
+    @GetMapping("/view/user/{name}")
+    public ResponseEntity<Optional<User>> userDetails(@PathVariable("name") String userName) {
+        try {
+            Optional<User> user = userRepository.findByUsername(userName);
+            return new ResponseEntity<Optional<User>>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/update/user")
+    public ResponseEntity updateUser(@RequestBody User user) {
+      try {
+        userRepository.save(user);
+        return new ResponseEntity(HttpStatus.OK);
+      }catch (Exception e){
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+      }
+
+    }
+
+    @PutMapping("/update/pass/user")
+    public ResponseEntity updatePasswordUser(@RequestBody User user) {
+      try {
+        user.setPassword(encoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return new ResponseEntity(HttpStatus.OK);
+      }catch (Exception e){
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+      }
     }
 }
