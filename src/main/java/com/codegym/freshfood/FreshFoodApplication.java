@@ -1,6 +1,8 @@
 package com.codegym.freshfood;
 
 import com.codegym.freshfood.security.services.UserDetailsServiceImpl;
+import com.codegym.freshfood.service.UserService;
+import com.codegym.freshfood.service.UserServiceImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,6 +25,10 @@ public class FreshFoodApplication {
     @Bean
     public UserDetailsService userDetailsService(){
         return new UserDetailsServiceImpl();
+    }
+    @Bean
+    public UserService userService() {
+        return new UserServiceImpl();
     }
 
     @Configuration

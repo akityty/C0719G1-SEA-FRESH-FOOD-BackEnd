@@ -10,14 +10,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-                "username"
-        }),
-        @UniqueConstraint(columnNames = {
-                "email"
-        })
-})
+@Table(name = "users"
+       /* , uniqueConstraints = {@UniqueConstraint(columnNames = {"username"}), @UniqueConstraint(columnNames = {"email"})}*/
+        )
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +26,6 @@ public class User {
   @Size(min = 3, max = 50)
   private String username;
 
-  @NaturalId
   @NotBlank
   @Size(max = 50)
   @Email
