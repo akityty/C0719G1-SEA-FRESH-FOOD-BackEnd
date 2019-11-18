@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -89,6 +90,7 @@ public class AuthRestAPIs {
     }
 
     @GetMapping("/view/user/{name}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Optional<User>> userDetails(@PathVariable("name") String userName) {
         try {
             Optional<User> user = userRepository.findByUsername(userName);
@@ -99,6 +101,7 @@ public class AuthRestAPIs {
     }
 
     @PutMapping("/update/user")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity updateUser(@RequestBody User user) {
       try {
         userRepository.save(user);
@@ -110,6 +113,7 @@ public class AuthRestAPIs {
     }
 
     @PutMapping("/update/pass/user")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity updatePasswordUser(@RequestBody User user) {
       try {
         user.setPassword(encoder.encode(user.getPassword()));
