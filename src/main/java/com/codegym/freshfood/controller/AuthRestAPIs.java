@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -48,7 +49,6 @@ public class AuthRestAPIs {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
-        System.out.println("ok");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
@@ -89,34 +89,49 @@ public class AuthRestAPIs {
     }
 
     @GetMapping("/view/user/{name}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Optional<User>> userDetails(@PathVariable("name") String userName) {
         try {
             Optional<User> user = userRepository.findByUsername(userName);
             return new ResponseEntity<Optional<User>>(user, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
 
     @PutMapping("/update/user")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity updateUser(@RequestBody User user) {
-      try {
-        userRepository.save(user);
-        return new ResponseEntity(HttpStatus.OK);
-      }catch (Exception e){
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
-      }
+        try {
+            Set<Role> roles = new HashSet<>();
+            Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+            roles.add(userRole);
+            user.setRoles(roles);
+            user.setEmail(user.getEmail());
+            userRepository.save(user);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
 
     }
 
-    @PutMapping("/update/pass/user")
+    @PutMapping("/update/password/user")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity updatePasswordUser(@RequestBody User user) {
-      try {
-        user.setPassword(encoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return new ResponseEntity(HttpStatus.OK);
-      }catch (Exception e){
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
-      }
+        System.out.println("ok");
+        try {
+            Set<Role> roles = new HashSet<>();
+            Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+            roles.add(userRole);
+            user.setRoles(roles);
+            user.setPassword(encoder.encode(user.getPassword()));
+            userRepository.save(user);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
     }
 }
