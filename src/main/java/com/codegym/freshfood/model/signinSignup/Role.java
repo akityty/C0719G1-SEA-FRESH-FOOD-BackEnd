@@ -1,4 +1,4 @@
-package com.codegym.freshfood.model;
+package com.codegym.freshfood.model.signinSignup;
 
 import org.hibernate.annotations.NaturalId;
 

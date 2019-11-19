@@ -1,6 +1,8 @@
 package com.codegym.freshfood;
 
 import com.codegym.freshfood.security.services.UserDetailsServiceImpl;
+import com.codegym.freshfood.service.ProductService;
+import com.codegym.freshfood.service.ProductServiceImpl;
 import com.codegym.freshfood.service.UserService;
 import com.codegym.freshfood.service.UserServiceImpl;
 import org.springframework.beans.BeansException;
@@ -30,8 +32,12 @@ public class FreshFoodApplication {
     public UserService userService() {
         return new UserServiceImpl();
     }
-
+    @Bean
+    public ProductService productService(){
+        return new ProductServiceImpl();
+    }
     @Configuration
+    static
     class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 
         private ApplicationContext appContext;

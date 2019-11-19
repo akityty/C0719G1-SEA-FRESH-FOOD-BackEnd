@@ -1,7 +1,7 @@
 package com.codegym.freshfood.repository;
 
-import com.codegym.freshfood.model.Role;
-import com.codegym.freshfood.model.RoleName;
+import com.codegym.freshfood.model.signinSignup.Role;
+import com.codegym.freshfood.model.signinSignup.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
