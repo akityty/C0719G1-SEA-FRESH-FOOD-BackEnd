@@ -120,7 +120,6 @@ public class AuthRestAPIs {
     @PutMapping("/update/password/user")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity updatePasswordUser(@RequestBody User user) {
-        System.out.println("ok");
         try {
             Set<Role> roles = new HashSet<>();
             Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
