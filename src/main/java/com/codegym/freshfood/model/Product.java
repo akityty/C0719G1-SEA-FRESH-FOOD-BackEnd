@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -14,30 +15,32 @@ public class Product {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-/*  @NotBlank
-  @Size(min = 1, max = 50)*/
+  /*  @NotBlank
+    @Size(min = 1, max = 50)*/
   private String name;
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "category_id")
   private Category category;
 
- /* @NotBlank
-  @Max(1000)*/
+  /* @NotBlank
+   @Max(1000)*/
   private Long amount;
 
- /* @NotBlank*/
-  private String picture;
+  /* @NotBlank*/
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "picture_id")
+  private List<Picture> picture;
 
-/*  @NotBlank
-  @Size(min = 20, max = 500)*/
+  /*  @NotBlank
+    @Size(min = 20, max = 500)*/
   private String description;
 
-/*  @NotBlank*/
+  /*  @NotBlank*/
   private Double price;
 
-/*  @NotBlank
-  @Size(min = 1, max = 50)*/
+  /*  @NotBlank
+    @Size(min = 1, max = 50)*/
   private String origin;
 
   @ManyToOne(cascade = CascadeType.ALL)
@@ -50,7 +53,7 @@ public class Product {
   public Product() {
   }
 
-  public Product(@NotBlank @Size(min = 1, max = 50) String name, Category category, @NotBlank @Max(1000) Long amount, @NotBlank String picture, @NotBlank @Size(min = 20, max = 500) String description, @NotBlank Double price, @NotBlank @Size(min = 1, max = 50) String origin, Provider provider, @NotBlank Boolean status) {
+  public Product(String name, Category category, Long amount, List<Picture> picture, String description, Double price, String origin, Provider provider, Boolean status) {
     this.name = name;
     this.category = category;
     this.amount = amount;
@@ -94,11 +97,11 @@ public class Product {
     this.amount = amount;
   }
 
-  public String getPicture() {
+  public List<Picture> getPicture() {
     return picture;
   }
 
-  public void setPicture(String picture) {
+  public void setPicture(List<Picture> picture) {
     this.picture = picture;
   }
 
