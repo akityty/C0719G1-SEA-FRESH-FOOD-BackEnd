@@ -3,12 +3,13 @@ package com.codegym.freshfood.controller;
 import com.codegym.freshfood.message.request.LoginForm;
 import com.codegym.freshfood.message.request.SignUpForm;
 import com.codegym.freshfood.message.response.JwtResponse;
-import com.codegym.freshfood.model.Role;
-import com.codegym.freshfood.model.RoleName;
-import com.codegym.freshfood.model.User;
+import com.codegym.freshfood.model.signinSignup.Role;
+import com.codegym.freshfood.model.signinSignup.RoleName;
+import com.codegym.freshfood.model.signinSignup.User;
 import com.codegym.freshfood.repository.RoleRepository;
 import com.codegym.freshfood.repository.UserRepository;
 import com.codegym.freshfood.security.jwt.JwtProvider;
+import com.codegym.freshfood.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,38 +33,41 @@ import java.util.Set;
 @RequestMapping("/api/auth")
 public class AuthRestAPIs {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+  @Autowired
+  AuthenticationManager authenticationManager;
 
-    @Autowired
-    UserRepository userRepository;
+  @Autowired
+  UserRepository userRepository;
 
-    @Autowired
-    RoleRepository roleRepository;
+  @Autowired
+  RoleRepository roleRepository;
 
-    @Autowired
-    PasswordEncoder encoder;
+  @Autowired
+  PasswordEncoder encoder;
 
-    @Autowired
-    JwtProvider jwtProvider;
+  @Autowired
+  JwtProvider jwtProvider;
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+  @Autowired
+  UserDetailsServiceImpl userDetailsService;
 
-        String jwt = jwtProvider.generateJwtToken(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+  @PostMapping("/signin")
+  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
+    Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                    loginRequest.getUsername(),
+                    loginRequest.getPassword()
+            )
+    );
+    SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
-    }
+    String jwt = jwtProvider.generateJwtToken(authentication);
+    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-    @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
+    return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+  }
+
+    @PostMapping(value = "/signup")
     public ResponseEntity registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -88,6 +92,8 @@ public class AuthRestAPIs {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+
+
     @GetMapping("/view/user/{name}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Optional<User>> userDetails(@PathVariable("name") String userName) {
@@ -99,22 +105,17 @@ public class AuthRestAPIs {
         }
     }
 
-    @PutMapping("/update/user")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity updateUser(@RequestBody User user) {
-        try {
-            Set<Role> roles = new HashSet<>();
-            Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-            roles.add(userRole);
-            user.setRoles(roles);
-            user.setEmail(user.getEmail());
-            userRepository.save(user);
-            return new ResponseEntity(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-
+    @PutMapping("update/user")
+    public ResponseEntity<User> updateProfile(@RequestBody User user) {
+        User currentUser = userDetailsService.getCurrentUser();
+        if (user != null) {
+            currentUser.setUsername(user.getUsername());
+            currentUser.setEmail(user.getEmail());
+            currentUser.setName(user.getName());
+            userRepository.save(currentUser);
+            return new ResponseEntity<>(currentUser, HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/update/password/user")
@@ -132,5 +133,11 @@ public class AuthRestAPIs {
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
+
     }
+
+
+
+
+
 }

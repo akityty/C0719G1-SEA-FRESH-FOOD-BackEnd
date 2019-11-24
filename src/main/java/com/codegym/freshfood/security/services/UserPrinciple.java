@@ -1,6 +1,6 @@
 package com.codegym.freshfood.security.services;
 
-import com.codegym.freshfood.model.User;
+import com.codegym.freshfood.model.signinSignup.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,6 +1,6 @@
 package com.codegym.freshfood.repository;
 
-import com.codegym.freshfood.model.User;
+import com.codegym.freshfood.model.signinSignup.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
