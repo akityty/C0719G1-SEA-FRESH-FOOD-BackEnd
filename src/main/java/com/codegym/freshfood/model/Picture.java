@@ -1,5 +1,6 @@
 package com.codegym.freshfood.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.data.annotation.TypeAlias;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class Picture {
 
   @ManyToOne
   @JoinColumn(name = "product_id")
+  @JsonBackReference
   private Product product;
 
 
