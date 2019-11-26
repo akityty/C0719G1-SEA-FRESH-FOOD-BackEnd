@@ -1,4 +1,4 @@
-package com.codegym.freshfood.model;
+package com.codegym.freshfood.model.signinSignup;
 
 public enum  RoleName {
     ROLE_USER,

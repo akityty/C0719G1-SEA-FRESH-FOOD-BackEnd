@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -60,7 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.cors().and().csrf().disable().
             authorizeRequests()
             .antMatchers("/api/auth/**").permitAll()
+            .antMatchers("/product/**").permitAll()
             .anyRequest().authenticated()
+            .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
             .and()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

@@ -3,9 +3,9 @@ package com.codegym.freshfood.controller;
 import com.codegym.freshfood.message.request.LoginForm;
 import com.codegym.freshfood.message.request.SignUpForm;
 import com.codegym.freshfood.message.response.JwtResponse;
-import com.codegym.freshfood.model.Role;
-import com.codegym.freshfood.model.RoleName;
-import com.codegym.freshfood.model.User;
+import com.codegym.freshfood.model.signinSignup.Role;
+import com.codegym.freshfood.model.signinSignup.RoleName;
+import com.codegym.freshfood.model.signinSignup.User;
 import com.codegym.freshfood.repository.RoleRepository;
 import com.codegym.freshfood.repository.UserRepository;
 import com.codegym.freshfood.security.jwt.JwtProvider;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -52,7 +53,6 @@ public class AuthRestAPIs {
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
-    System.out.println("ok");
     Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                     loginRequest.getUsername(),
@@ -67,54 +67,77 @@ public class AuthRestAPIs {
     return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
   }
 
-  @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
-    if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-      return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    @PostMapping(value = "/signup")
+    public ResponseEntity registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        // Creating user's account
+        User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
+                signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
+
+        Set<String> strRoles = signUpRequest.getRole();
+        Set<Role> roles = new HashSet<>();
+        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+        roles.add(userRole);
+
+        user.setRoles(roles);
+        userRepository.save(user);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-      return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+
+    @GetMapping("/view/user/{name}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Optional<User>> userDetails(@PathVariable("name") String userName) {
+        try {
+            Optional<User> user = userRepository.findByUsername(userName);
+            return new ResponseEntity<Optional<User>>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
-    // Creating user's account
-    User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
-            signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
-
-    Set<String> strRoles = signUpRequest.getRole();
-    Set<Role> roles = new HashSet<>();
-    Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-            .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-    roles.add(userRole);
-
-    user.setRoles(roles);
-    userRepository.save(user);
-    return new ResponseEntity(HttpStatus.OK);
-  }
-
-  @PreAuthorize("hasRole('USER')")
-  @PutMapping("update/user")
-  public ResponseEntity<User> updateProfile(@RequestBody User user) {
-    User currentUser = userDetailsService.getCurrentUser();
-    if (user != null) {
-      currentUser.setUsername(user.getUsername());
-      currentUser.setEmail(user.getEmail());
-      currentUser.setName(user.getName());
-      userRepository.save(currentUser);
-      return new ResponseEntity<>(currentUser, HttpStatus.OK);
-    } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-  }
-
-  @PreAuthorize("hasRole('USER')")
-  @PutMapping("/update/pass/user")
-  public ResponseEntity changePassword( @RequestBody User user){
-    User currentUser = userDetailsService.getCurrentUser();
-    if(user != null) {
-      currentUser.setPassword(encoder.encode(user.getPassword()));
-      userRepository.save(currentUser);
-      return new ResponseEntity(HttpStatus.OK);
+    @PreAuthorize("hasRole('USER')")
+    @PutMapping("update/user")
+    public ResponseEntity<User> updateProfile(@RequestBody User user) {
+        User currentUser = userDetailsService.getCurrentUser();
+        if (user != null) {
+            currentUser.setUsername(user.getUsername());
+            currentUser.setEmail(user.getEmail());
+            currentUser.setName(user.getName());
+            userRepository.save(currentUser);
+            return new ResponseEntity<>(currentUser, HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    return new ResponseEntity(HttpStatus.NOT_FOUND);
-  }
+
+    @PutMapping("/update/password/user")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity updatePasswordUser(@RequestBody User user) {
+        try {
+            Set<Role> roles = new HashSet<>();
+            Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+            roles.add(userRole);
+            user.setRoles(roles);
+            user.setPassword(encoder.encode(user.getPassword()));
+            userRepository.save(user);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
+    }
+
+
+
+
 
 }

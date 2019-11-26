@@ -1,7 +1,8 @@
-package com.codegym.freshfood.service;
+package com.codegym.freshfood.service.impl;
 
-import com.codegym.freshfood.model.User;
+import com.codegym.freshfood.model.signinSignup.User;
 import com.codegym.freshfood.repository.UserRepository;
+import com.codegym.freshfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;

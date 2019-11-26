@@ -1,6 +1,4 @@
-package com.codegym.freshfood.model;
-
-import org.hibernate.annotations.NaturalId;
+package com.codegym.freshfood.model.signinSignup;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
