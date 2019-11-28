@@ -1,14 +1,8 @@
 package com.codegym.freshfood;
 
 import com.codegym.freshfood.security.services.UserDetailsServiceImpl;
-import com.codegym.freshfood.service.CategoryService;
-import com.codegym.freshfood.service.PictureService;
-import com.codegym.freshfood.service.ProductService;
-import com.codegym.freshfood.service.impl.CategoryServiceImpl;
-import com.codegym.freshfood.service.impl.PictureServiceImpl;
-import com.codegym.freshfood.service.impl.ProductServiceImpl;
-import com.codegym.freshfood.service.UserService;
-import com.codegym.freshfood.service.impl.UserServiceImpl;
+import com.codegym.freshfood.service.*;
+import com.codegym.freshfood.service.impl.*;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -45,6 +39,10 @@ public class FreshFoodApplication {
     @Bean
     public CategoryService categoryService(){
         return new CategoryServiceImpl();
+    }
+    @Bean
+    public OrderService orderService(){
+        return new OrderServiceImpl();
     }
     @Configuration
     static
