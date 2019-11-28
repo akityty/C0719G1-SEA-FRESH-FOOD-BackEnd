@@ -29,8 +29,9 @@ public class Category {
   public Category() {
   }
 
-  public Category(String name) {
+  public Category(String name, List<Product> products) {
     this.name = name;
+    this.products = products;
   }
 
   public Long getId() {

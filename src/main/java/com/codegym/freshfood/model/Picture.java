@@ -20,15 +20,15 @@ public class Picture {
 
   @ManyToOne
   @JoinColumn(name = "product_id")
-  @JsonBackReference
   private Product product;
 
 
   public Picture() {
   }
 
-  public Picture(String name) {
+  public Picture(String name, Product product) {
     this.name = name;
+    this.product = product;
   }
 
   public Long getId() {

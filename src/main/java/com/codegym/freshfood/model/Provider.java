@@ -28,8 +28,9 @@ public class Provider {
   public Provider() {
   }
 
-  public Provider(@NotBlank @Size(min = 1, max = 20) String name) {
+  public Provider(@NotBlank @Size(min = 1, max = 20) String name, List<Product> products) {
     this.name = name;
+    this.products = products;
   }
 
   public Long getId() {

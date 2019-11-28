@@ -1,8 +1,10 @@
 package com.codegym.freshfood;
 
 import com.codegym.freshfood.security.services.UserDetailsServiceImpl;
+import com.codegym.freshfood.service.CategoryService;
 import com.codegym.freshfood.service.PictureService;
 import com.codegym.freshfood.service.ProductService;
+import com.codegym.freshfood.service.impl.CategoryServiceImpl;
 import com.codegym.freshfood.service.impl.PictureServiceImpl;
 import com.codegym.freshfood.service.impl.ProductServiceImpl;
 import com.codegym.freshfood.service.UserService;
@@ -39,6 +41,10 @@ public class FreshFoodApplication {
     @Bean
     public PictureService pictureService(){
         return new PictureServiceImpl();
+    }
+    @Bean
+    public CategoryService categoryService(){
+        return new CategoryServiceImpl();
     }
     @Configuration
     static
