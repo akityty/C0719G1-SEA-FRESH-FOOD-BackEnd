@@ -12,7 +12,6 @@ import com.codegym.freshfood.security.jwt.JwtProvider;
 import com.codegym.freshfood.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -52,7 +51,7 @@ public class AuthRestAPIs {
   UserDetailsServiceImpl userDetailsService;
 
   @PostMapping("/signin")
-  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
+  public ResponseEntity authenticateUser(@Valid @RequestBody LoginForm loginRequest) {
     Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                     loginRequest.getUsername(),
@@ -65,6 +64,7 @@ public class AuthRestAPIs {
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
     return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+ /*   return new ResponseEntity (new JwtResponse(jwt,userDetails.getUsername(),userDetails.getAuthorities()), HttpStatus.OK);*/
   }
 
     @PostMapping(value = "/signup")

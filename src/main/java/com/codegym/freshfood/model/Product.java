@@ -1,5 +1,8 @@
 package com.codegym.freshfood.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -22,7 +25,8 @@ public class Product {
   private Long amount;
 
   /* @NotBlank*/
-//  @JsonIgnore
+  @JsonIgnore
+/*  @JsonBackReference*/
   @OneToMany(targetEntity = Picture.class,mappedBy = "product")
   private List<Picture> picture;
 
@@ -57,6 +61,7 @@ public class Product {
     this.provider = provider;
     this.status = status;
   }
+
 
   public Long getId() {
     return id;

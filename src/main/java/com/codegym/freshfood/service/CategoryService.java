@@ -2,6 +2,10 @@ package com.codegym.freshfood.service;
 
 import com.codegym.freshfood.model.Category;
 
+import java.util.Optional;
+
 public interface CategoryService {
-    Iterable<Category> findAllCategory();
+  void save(Category category);
+  void delete(Long id);
+  Optional<Category> findById(Long id);
 }
