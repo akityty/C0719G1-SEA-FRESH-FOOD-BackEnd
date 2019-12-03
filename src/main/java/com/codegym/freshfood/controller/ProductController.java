@@ -36,6 +36,8 @@ public class ProductController {
     }
 
     @PostMapping("/add")
+
+
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity addNewProduct(@RequestBody Product product) {
         try {
