@@ -25,7 +25,7 @@ public class Product {
   private Long amount;
 
   /* @NotBlank*/
-  @JsonIgnore
+//  @JsonIgnore
 /*  @JsonBackReference*/
   @OneToMany(targetEntity = Picture.class,mappedBy = "product")
   private List<Picture> picture;

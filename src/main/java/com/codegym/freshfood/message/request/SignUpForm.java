@@ -12,7 +12,7 @@ public class SignUpForm {
 
     @NotBlank
     @Size(min = 3, max = 50)
-    private String username;
+        private String username;
 
     @NotBlank
     @Size(max = 60)

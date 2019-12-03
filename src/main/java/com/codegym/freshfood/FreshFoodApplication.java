@@ -44,6 +44,10 @@ public class FreshFoodApplication {
     public ProviderService providerService(){
         return new ProviderServiceImpl();
     }
+    @Bean
+    public OrderService orderService(){
+        return new OrderServiceImpl();
+    }
     @Configuration
     static
     class WebConfig implements WebMvcConfigurer, ApplicationContextAware {

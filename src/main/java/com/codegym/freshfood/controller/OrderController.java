@@ -26,7 +26,7 @@ public class OrderController {
     if(orderList != null){
       return new ResponseEntity<List<Order>>(orderList, HttpStatus.OK);
     }else{
-      return new ResponseEntity<List<Order>>(HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
   }
 }

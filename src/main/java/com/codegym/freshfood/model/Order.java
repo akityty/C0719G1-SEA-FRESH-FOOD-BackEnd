@@ -1,6 +1,5 @@
 package com.codegym.freshfood.model;
 
-import org.hibernate.annotations.NaturalId;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -27,6 +26,7 @@ public class Order {
 
   @OneToMany(targetEntity = OrderItem.class)
   private List<OrderItem> orderItem;
+
   private Double total;
 
   public Order() {

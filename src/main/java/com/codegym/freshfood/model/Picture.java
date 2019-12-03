@@ -18,6 +18,7 @@ public class Picture {
 //  @NotBlank
   private String name;
 
+  @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "product_id")
   private Product product;

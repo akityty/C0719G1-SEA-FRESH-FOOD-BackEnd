@@ -3,8 +3,6 @@ package com.codegym.freshfood.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -27,6 +25,10 @@ public class Category {
   private List<Product> products;
 
   public Category() {
+  }
+
+  public Category(String name) {
+    this.name = name;
   }
 
   public Category(String name, List<Product> products) {
