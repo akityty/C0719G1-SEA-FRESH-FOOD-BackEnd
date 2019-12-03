@@ -96,8 +96,35 @@ public class ProductController {
             return new ResponseEntity<List<Product>>(HttpStatus.NOT_FOUND);
         }
     }
-   /* //chuc nang cua KH
-    @GetMapping("/findByName")
-    public ResponseEntity<L>*/
+   //chuc nang cua KH
+    @GetMapping("/findAllByName")
+    public ResponseEntity<List<Product>> findAllByName(@RequestParam String name) {
+       List<Product> productList = productService.findAllByName(name);
+        if (!productList.isEmpty()) {
+            return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<List<Product>>(HttpStatus.NOT_FOUND);
+        }
+    }
 
+    @GetMapping("/findAllByOrigin/{origin}")
+    public ResponseEntity <List<Product>> findAllByOrigin(@PathVariable String origin){
+        List<Product> productList = productService.findAllByOrigin(origin);
+        if (!productList.isEmpty()) {
+            return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<List<Product>>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/findAllByPriceBetween/{price}&&{price2}")
+    public ResponseEntity<List<Product>> findAllByPriceBetween(@PathVariable Double price, @PathVariable Double price2){
+        List<Product> productList = productService.findAllByPriceBetween(price,price2);
+        if (!productList.isEmpty()) {
+            return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<List<Product>>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
