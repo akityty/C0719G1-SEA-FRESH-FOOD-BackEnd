@@ -1,10 +1,13 @@
 package com.codegym.freshfood.model.signinSignup;
 
+import com.codegym.freshfood.model.Order;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -39,6 +42,8 @@ public class User {
           inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
 
+  @OneToMany(targetEntity = Order.class)
+  private List<Order> orders;
   public User() {
   }
 
@@ -47,6 +52,23 @@ public class User {
     this.username = username;
     this.email = email;
     this.password = password;
+  }
+
+  public User(@NotBlank @Size(min = 3, max = 50) String name, @NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(max = 50) @Email String email, @NotBlank @Size(min = 6, max = 100) String password, Set<Role> roles, List<Order> orders) {
+    this.name = name;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.roles = roles;
+    this.orders = orders;
+  }
+
+  public List<Order> getOrders() {
+    return orders;
+  }
+
+  public void setOrders(List<Order> orders) {
+    this.orders = orders;
   }
 
   public Long getId() {
