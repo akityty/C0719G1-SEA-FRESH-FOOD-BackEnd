@@ -21,6 +21,11 @@ public class FreshFoodApplication {
 
         }
     @Bean
+    public OrderService orderService(){
+        return new OrderServiceImpl();
+    }
+
+    @Bean
     public UserDetailsService userDetailsService(){
         return new UserDetailsServiceImpl();
     }

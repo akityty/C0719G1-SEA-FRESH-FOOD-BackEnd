@@ -6,6 +6,7 @@ import java.util.Optional;
 public interface CategoryService {
   void save(Category category);
   void delete(Long id);
+  Iterable<Category> findAllCategory();
   Optional<Category> findById(Long id);
   Iterable<Category> findAllCategory();
 }
