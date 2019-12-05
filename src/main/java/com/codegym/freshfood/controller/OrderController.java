@@ -1,12 +1,21 @@
 package com.codegym.freshfood.controller;
 
 import com.codegym.freshfood.model.Order;
+import com.codegym.freshfood.model.OrderItem;
+import com.codegym.freshfood.model.Product;
+import com.codegym.freshfood.model.Status;
+import com.codegym.freshfood.model.signinSignup.User;
+import com.codegym.freshfood.security.jwt.JwtAuthTokenFilter;
+import com.codegym.freshfood.security.jwt.JwtProvider;
 import com.codegym.freshfood.service.OrderService;
+import com.codegym.freshfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,11 +25,18 @@ import java.util.Optional;
 public class OrderController {
   @Autowired
   OrderService orderService;
-  @PostMapping("/save")
+  @Autowired
+  UserService userService;
+ /* @PostMapping("/save")
   public ResponseEntity createOrder(@RequestBody Order order){
     orderService.save(order);
     return new ResponseEntity(HttpStatus.CREATED);
-  }
+  }*/
+ @PostMapping("/save")
+ public ResponseEntity createOrder(@RequestBody Order order, HttpServletRequest request){
+   orderService.save(order,request);
+   return new ResponseEntity(HttpStatus.CREATED);
+ }
   //cc
   @GetMapping("/list")
   public ResponseEntity<List<Order>> findAllOrder(){

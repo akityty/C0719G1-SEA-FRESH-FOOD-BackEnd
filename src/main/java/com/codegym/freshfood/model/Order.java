@@ -50,6 +50,10 @@ public class Order {
     this.total = total;
   }
 
+  public Order(List<OrderItem> orderItem) {
+    this.orderItem = orderItem;
+  }
+
   public User getUser() {
     return user;
   }

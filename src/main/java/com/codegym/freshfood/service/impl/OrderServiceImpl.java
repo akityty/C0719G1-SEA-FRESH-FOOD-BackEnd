@@ -3,12 +3,20 @@ package com.codegym.freshfood.service.impl;
 import com.codegym.freshfood.model.Order;
 import com.codegym.freshfood.model.OrderItem;
 import com.codegym.freshfood.model.Product;
+import com.codegym.freshfood.model.Status;
+import com.codegym.freshfood.model.signinSignup.User;
 import com.codegym.freshfood.repository.OrderItemRepository;
 import com.codegym.freshfood.repository.OrderRepository;
 import com.codegym.freshfood.repository.ProductRepository;
+import com.codegym.freshfood.repository.UserRepository;
+import com.codegym.freshfood.security.jwt.JwtAuthTokenFilter;
+import com.codegym.freshfood.security.jwt.JwtProvider;
 import com.codegym.freshfood.service.OrderService;
+import com.codegym.freshfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +27,13 @@ public class OrderServiceImpl implements OrderService {
   OrderRepository orderRepository;
   @Autowired
   ProductRepository productRepository;
+  @Autowired
+  JwtProvider jwtProvider;
+  @Autowired
+  JwtAuthTokenFilter jwtAuthTokenFilter;
+  @Autowired
+  UserRepository userRepository;
+
   @Override
   public void save(Order order) {
     orderRepository.save(order);
@@ -42,6 +57,25 @@ public class OrderServiceImpl implements OrderService {
     orderRepository.save(order);
 */
 
+  }
+
+  @Override
+  public void save(Order order, HttpServletRequest request) {
+    String jwt = this.getJwt(request);
+    String userName = jwtProvider.getUserNameFromJwtToken(jwt);
+    Optional<User> user = userRepository.findByUsername(userName);
+    order.setUser(user.get());
+    Date date = new Date();
+    order.setDate(date);
+    order.setStatus(Status.Processing);
+    double total = 0;
+    for (OrderItem orderItem: order.getOrderItem()) {
+      Optional<Product> product = productRepository.findById(orderItem.getProductId());
+             total += orderItem.getQuantity()*product.get().getPrice();
+    }
+    order.setTotal(total);
+    Order realOrder = new Order(order.getUser(), order.getDate(), order.getStatus(),order.getOrderItem(), order.getTotal());
+    orderRepository.save(realOrder);
   }
 
   @Override
@@ -74,4 +108,13 @@ public class OrderServiceImpl implements OrderService {
     }
     return total;
   }*/
+  private String getJwt(HttpServletRequest request) {
+    String authHeader = request.getHeader("Authorization");
+
+    if (authHeader != null && authHeader.startsWith("Bearer ")) {
+      return authHeader.replace("Bearer ","");
+    }
+
+    return null;
+  }
 }

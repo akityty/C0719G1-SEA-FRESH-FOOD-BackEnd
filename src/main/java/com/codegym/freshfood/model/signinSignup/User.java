@@ -1,5 +1,6 @@
 package com.codegym.freshfood.model.signinSignup;
 
+import com.codegym.freshfood.model.Comment;
 import com.codegym.freshfood.model.Order;
 
 import javax.persistence.*;
@@ -44,6 +45,8 @@ public class User {
 
   @OneToMany(targetEntity = Order.class)
   private List<Order> orders;
+  @OneToMany(targetEntity = Comment.class)
+  private List<Comment> comments;
   public User() {
   }
 
@@ -61,6 +64,24 @@ public class User {
     this.password = password;
     this.roles = roles;
     this.orders = orders;
+  }
+
+  public User(@NotBlank @Size(min = 3, max = 50) String name, @NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(max = 50) @Email String email, @NotBlank @Size(min = 6, max = 100) String password, Set<Role> roles, List<Order> orders, List<Comment> comments) {
+    this.name = name;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.roles = roles;
+    this.orders = orders;
+    this.comments = comments;
+  }
+
+  public List<Comment> getComments() {
+    return comments;
+  }
+
+  public void setComments(List<Comment> comments) {
+    this.comments = comments;
   }
 
   public List<Order> getOrders() {
