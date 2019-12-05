@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-//cc nhe a ha
+// cc
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/order")
