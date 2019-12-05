@@ -19,31 +19,43 @@ public class FreshFoodApplication {
     public static void main(String[] args) {
         SpringApplication.run(FreshFoodApplication.class, args);
 
-        }
+    }
+
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
+
     @Bean
     public UserService userService() {
         return new UserServiceImpl();
     }
+
     @Bean
-    public ProductService productService(){
+    public ProductService productService() {
         return new ProductServiceImpl();
     }
+
     @Bean
-    public PictureService pictureService(){
+    public PictureService pictureService() {
         return new PictureServiceImpl();
     }
+
     @Bean
-    public CategoryService categoryService(){
+    public CategoryService categoryService() {
         return new CategoryServiceImpl();
     }
+
     @Bean
-    public ProviderService providerService(){
+    public ProviderService providerService() {
         return new ProviderServiceImpl();
     }
+
+    @Bean
+    OrderService orderService() {
+        return new OrderServiceImpl();
+    }
+
     @Configuration
     static
     class WebConfig implements WebMvcConfigurer, ApplicationContextAware {

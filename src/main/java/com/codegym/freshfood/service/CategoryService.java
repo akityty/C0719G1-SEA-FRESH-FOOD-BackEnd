@@ -8,4 +8,5 @@ public interface CategoryService {
   void save(Category category);
   void delete(Long id);
   Optional<Category> findById(Long id);
+  Iterable<Category> findAllCategory();
 }
