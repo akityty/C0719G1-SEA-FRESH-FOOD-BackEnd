@@ -5,6 +5,7 @@ import com.codegym.freshfood.model.signinSignup.RoleName;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface RoleService {
     Optional<Role> findByName(RoleName roleName);

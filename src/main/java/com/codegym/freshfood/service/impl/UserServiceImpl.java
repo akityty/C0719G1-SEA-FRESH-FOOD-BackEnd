@@ -5,6 +5,7 @@ import com.codegym.freshfood.repository.UserRepository;
 import com.codegym.freshfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
@@ -23,5 +24,15 @@ public class UserServiceImpl implements UserService {
   @Override
   public Optional<User> findByUsername(String username) {
     return userRepository.findByUsername(username);
+  }
+
+  @Override
+  public void save(User user) {
+    userRepository.save(user);
+  }
+
+  @Override
+  public List<User> findAll() {
+    return userRepository.findAll();
   }
 }
