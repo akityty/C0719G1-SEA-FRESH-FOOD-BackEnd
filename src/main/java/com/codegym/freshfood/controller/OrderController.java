@@ -79,23 +79,4 @@ public class OrderController {
       return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
   }
-/*  @GetMapping("/findOrdersByMonth/{year}&&{month}")
-  public ResponseEntity<List<Order>> findOrdersByMonth(@PathVariable int year,@PathVariable int month){
-    List<Order> orderList = orderService.findAllByDate_YearAndDate_Month(year, month);
-    if(!orderList.isEmpty()){
-      return new ResponseEntity<List<Order>>(orderList,HttpStatus.OK);
-    }else{
-      return new ResponseEntity<List<Order>>(HttpStatus.NOT_FOUND);
-    }
-  }
-  @GetMapping("/earningCalculate/{year}&&{month}")
-  public ResponseEntity<Double> earningCalculate(@PathVariable int year,@PathVariable int month){
-    List<Order> orderList = orderService.findAllByDate_YearAndDate_Month(year, month);
-    if(!orderList.isEmpty()){
-      Double total = orderService.earningCalculate(orderList);
-      return new ResponseEntity<Double>(total,HttpStatus.OK);
-    }else{
-      return new ResponseEntity<Double>(HttpStatus.NOT_FOUND);
-    }
-  }*/
 }
