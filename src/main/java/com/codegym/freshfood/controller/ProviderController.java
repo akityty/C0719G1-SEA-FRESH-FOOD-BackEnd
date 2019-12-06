@@ -19,7 +19,6 @@ public class ProviderController {
     private ProviderService providerService;
 
     @GetMapping("/list")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity showListProvider() {
         try {
             Iterable<Provider> providers = providerService.findAllProvider();
