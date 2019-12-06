@@ -66,6 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/category/**").permitAll()
             .antMatchers("/order/**").permitAll()
             .antMatchers("/comment/**").permitAll()
+            .antMatchers("/role/**").permitAll()
+
             .anyRequest().authenticated()
             .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
             .and()

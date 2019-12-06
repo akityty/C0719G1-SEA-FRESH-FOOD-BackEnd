@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface OrderService {
   void save(Order order);
-  void save(Order order, HttpServletRequest request);
   List<Order> findAll();
   Optional<Order> findById(Long id);
   void deleteOrder(Order order);

@@ -7,6 +7,7 @@ import com.codegym.freshfood.model.Status;
 import com.codegym.freshfood.model.signinSignup.User;
 import com.codegym.freshfood.security.jwt.JwtAuthTokenFilter;
 import com.codegym.freshfood.security.jwt.JwtProvider;
+import com.codegym.freshfood.security.services.UserDetailsServiceImpl;
 import com.codegym.freshfood.service.OrderService;
 import com.codegym.freshfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +28,13 @@ public class OrderController {
   OrderService orderService;
   @Autowired
   UserService userService;
- /* @PostMapping("/save")
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
+  @PostMapping("/save")
   public ResponseEntity createOrder(@RequestBody Order order){
     orderService.save(order);
     return new ResponseEntity(HttpStatus.CREATED);
-  }*/
- @PostMapping("/save")
- public ResponseEntity createOrder(@RequestBody Order order, HttpServletRequest request){
-   orderService.save(order,request);
-   return new ResponseEntity(HttpStatus.CREATED);
- }
+  }
   //cc
   @GetMapping("/list")
   public ResponseEntity<List<Order>> findAllOrder(){

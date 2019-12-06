@@ -52,6 +52,10 @@ public class FreshFoodApplication {
     public CommentService commentService(){
         return new CommentServiceImpl();
     }
+    @Bean
+    public RoleService roleService(){
+        return new RoleServiceImpl();
+    }
     @Configuration
     static
     class WebConfig implements WebMvcConfigurer, ApplicationContextAware {

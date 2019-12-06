@@ -11,6 +11,7 @@ import com.codegym.freshfood.repository.ProductRepository;
 import com.codegym.freshfood.repository.UserRepository;
 import com.codegym.freshfood.security.jwt.JwtAuthTokenFilter;
 import com.codegym.freshfood.security.jwt.JwtProvider;
+import com.codegym.freshfood.security.services.UserDetailsServiceImpl;
 import com.codegym.freshfood.service.OrderService;
 import com.codegym.freshfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,25 @@ public class OrderServiceImpl implements OrderService {
   JwtAuthTokenFilter jwtAuthTokenFilter;
   @Autowired
   UserRepository userRepository;
+  @Autowired
+  UserDetailsServiceImpl userDetailsService;
 
   @Override
   public void save(Order order) {
-    orderRepository.save(order);
+    User currentUser = userDetailsService.getCurrentUser();
+    order.setUser(currentUser);
+    order.setDate(new Date());
+    order.setStatus(Status.Processing);
+    double total = 0;
+    for (OrderItem orderItem: order.getOrderItem()) {
+      Optional<Product> product = productRepository.findById(orderItem.getProductId());
+      total += orderItem.getQuantity()*product.get().getPrice();
+    }
+    order.setTotal(total);
+
+    Order realOrder = new Order(order.getUser(), order.getDate(), order.getStatus(),order.getOrderItem(), order.getTotal());
+    orderRepository.save(realOrder);
+    //tru amount
     List<OrderItem> orderItemList = order.getOrderItem();
     for (OrderItem orderItem: orderItemList) {
       Long productId =  orderItem.getProductId();
@@ -57,25 +73,6 @@ public class OrderServiceImpl implements OrderService {
     orderRepository.save(order);
 */
 
-  }
-
-  @Override
-  public void save(Order order, HttpServletRequest request) {
-    String jwt = this.getJwt(request);
-    String userName = jwtProvider.getUserNameFromJwtToken(jwt);
-    Optional<User> user = userRepository.findByUsername(userName);
-    order.setUser(user.get());
-    Date date = new Date();
-    order.setDate(date);
-    order.setStatus(Status.Processing);
-    double total = 0;
-    for (OrderItem orderItem: order.getOrderItem()) {
-      Optional<Product> product = productRepository.findById(orderItem.getProductId());
-             total += orderItem.getQuantity()*product.get().getPrice();
-    }
-    order.setTotal(total);
-    Order realOrder = new Order(order.getUser(), order.getDate(), order.getStatus(),order.getOrderItem(), order.getTotal());
-    orderRepository.save(realOrder);
   }
 
   @Override
