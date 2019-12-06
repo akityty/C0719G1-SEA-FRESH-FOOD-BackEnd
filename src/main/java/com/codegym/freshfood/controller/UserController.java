@@ -47,4 +47,9 @@ public class UserController {
         userService.save(currentUser);
         return new ResponseEntity(HttpStatus.OK);
     }
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteUser(@RequestBody User user){
+        userService.delete(user);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }
