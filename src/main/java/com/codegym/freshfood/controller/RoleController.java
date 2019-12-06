@@ -29,4 +29,9 @@ public class RoleController {
             return new ResponseEntity<List<Role>>(HttpStatus.NOT_FOUND);
         }
     }
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteRole(@RequestBody Role role){
+        roleService.delete(role);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

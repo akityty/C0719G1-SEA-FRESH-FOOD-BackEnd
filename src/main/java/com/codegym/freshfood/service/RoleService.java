@@ -11,4 +11,5 @@ public interface RoleService {
     Optional<Role> findByName(RoleName roleName);
     void save(Role role);
     List<Role> findAll();
+    void delete(Role role);
 }
