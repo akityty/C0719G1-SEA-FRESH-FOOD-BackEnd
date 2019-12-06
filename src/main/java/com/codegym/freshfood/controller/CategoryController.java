@@ -42,4 +42,9 @@ public class CategoryController {
            return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
        }
     }
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteCategory(@RequestBody Category category){
+        categoryService.delete(category.getId());
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

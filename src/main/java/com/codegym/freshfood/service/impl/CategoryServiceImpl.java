@@ -22,6 +22,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public void delete(Category category) {
+        categoryRepository.delete(category);
+    }
+
+    @Override
     public Optional<Category> findById(Long id) {
         return categoryRepository.findById(id);
     }
