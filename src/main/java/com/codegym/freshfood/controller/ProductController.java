@@ -34,9 +34,6 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-
-
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity addNewProduct(@RequestBody Product product) {
         try {
             productService.save(product);
@@ -59,8 +56,6 @@ public class ProductController {
             return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);
         }
     }
-
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
     public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
         Optional<Product> currentProduct = productService.findById(product.getId());
