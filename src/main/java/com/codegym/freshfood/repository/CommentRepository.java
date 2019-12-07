@@ -1,6 +1,7 @@
 package com.codegym.freshfood.repository;
 
 import com.codegym.freshfood.model.Comment;
+import com.codegym.freshfood.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,4 +16,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 @Query("select c from Comment c order by c.date")
     List<Comment> findAllAndSortByDate();
+List<Comment> findAllByProductOrderByDate(Product product);
 }

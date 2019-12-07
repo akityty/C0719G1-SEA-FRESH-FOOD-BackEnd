@@ -29,7 +29,8 @@ public class Product {
 /*  @JsonBackReference*/
   @OneToMany(targetEntity = Picture.class,mappedBy = "product")
   private List<Picture> picture;
-
+  @OneToMany(targetEntity = Comment.class)
+  private List<Comment> comments;
   /*  @NotBlank
     @Size(min = 20, max = 500)*/
   private String description;
@@ -62,6 +63,26 @@ public class Product {
     this.status = status;
   }
 
+  public Product(String name, Category category, Long amount, List<Picture> picture, List<Comment> comments, String description, Double price, String origin, Provider provider, Boolean status) {
+    this.name = name;
+    this.category = category;
+    this.amount = amount;
+    this.picture = picture;
+    this.comments = comments;
+    this.description = description;
+    this.price = price;
+    this.origin = origin;
+    this.provider = provider;
+    this.status = status;
+  }
+
+  public List<Comment> getComments() {
+    return comments;
+  }
+
+  public void setComments(List<Comment> comments) {
+    this.comments = comments;
+  }
 
   public Long getId() {
     return id;

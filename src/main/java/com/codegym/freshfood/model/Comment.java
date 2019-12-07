@@ -19,13 +19,31 @@ public class Comment {
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private Product product;
+
     public Comment() {
+    }
+
+    public Comment(String content, Date date, User user, Product product) {
+        Content = content;
+        this.date = date;
+        this.user = user;
+        this.product = product;
     }
 
     public Comment(String content, @NotBlank Date date, User user) {
         Content = content;
         this.date = date;
         this.user = user;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Long getId() {

@@ -1,6 +1,7 @@
 package com.codegym.freshfood.service.impl;
 
 import com.codegym.freshfood.model.Comment;
+import com.codegym.freshfood.model.Product;
 import com.codegym.freshfood.repository.CommentRepository;
 import com.codegym.freshfood.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> findAllAndSortByDate() {
         return commentRepository.findAllAndSortByDate();
+    }
+
+    @Override
+    public List<Comment> findAllByProductOrderByDate(Product product) {
+        return commentRepository.findAllByProductOrderByDate(product);
     }
 }
