@@ -1,5 +1,6 @@
 package com.codegym.freshfood.controller;
 
+import com.codegym.freshfood.message.request.DateForm;
 import com.codegym.freshfood.model.Order;
 import com.codegym.freshfood.model.OrderItem;
 import com.codegym.freshfood.model.Product;
@@ -70,13 +71,48 @@ public class OrderController {
     }
   }
   @DeleteMapping("/delete")
-  public ResponseEntity deleteOrder(@RequestBody Order order){
+  public ResponseEntity deleteOrder(@RequestBody Order order) {
     Optional<Order> currentOrder = orderService.findById(order.getId());
-    if(currentOrder.isPresent()) {
+    if (currentOrder.isPresent()) {
       orderService.deleteOrder(currentOrder.get());
+      return new ResponseEntity(HttpStatus.OK);
+    } else {
+      return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+  }
+  @GetMapping("/getOrdersByStatus/{status}")
+  public ResponseEntity<List<Order>> getOrdersByStatus(@PathVariable Status status){
+    List<Order> orderList = orderService.findAllByStatus(status);
+    return new ResponseEntity<List<Order>>(orderList,HttpStatus.OK);
+  }
+  @PutMapping("/editStatus/{orderId}")
+  public ResponseEntity editStatus(@PathVariable Long orderId){
+    Optional<Order> order = orderService.findById(orderId);
+    if(order.isPresent()){
+      orderService.editStatus(order.get());
       return new ResponseEntity(HttpStatus.OK);
     }else{
       return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
+  }
+  @GetMapping("/getOrdersByDate")
+  public ResponseEntity<List<Order>> getOrdersByDate(@RequestBody DateForm dateForm){
+    List<Order> orderList = orderService.findAllByDateBetween(dateForm.getFirstDate(),dateForm.getLastDate());
+    if(!orderList.isEmpty()){
+      return new ResponseEntity<List<Order>>(orderList,HttpStatus.OK);
+    }else{
+      return new ResponseEntity<List<Order>>(HttpStatus.NOT_FOUND);
+    }
+  }
+  @GetMapping("/getTotalByOrders")
+  public ResponseEntity<Double> getTotalByOrders(@RequestBody DateForm dateForm) {
+    List<Order> orderList = orderService.findAllByDateBetween(dateForm.getFirstDate(),dateForm.getLastDate());
+    if(!orderList.isEmpty()){
+      Double total = orderService.totalOfOrders(orderList);
+      return new ResponseEntity<Double>(total, HttpStatus.OK);
+    }else{
+      return new ResponseEntity<Double>(HttpStatus.NOT_FOUND);
+    }
+
   }
 }

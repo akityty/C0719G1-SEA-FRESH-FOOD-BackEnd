@@ -17,6 +17,7 @@ import com.codegym.freshfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -88,6 +89,31 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public void deleteOrder(Order order) {
     orderRepository.delete(order);
+  }
+
+  @Override
+  public List<Order> findAllByStatus(Status status) {
+    return orderRepository.findAllByStatus(status);
+  }
+
+  @Override
+  public void editStatus(Order order) {
+    order.setStatus(Status.Done);
+    orderRepository.save(order);
+  }
+
+  @Override
+  public List<Order> findAllByDateBetween(@NotBlank Date date1, @NotBlank Date date2) {
+    return orderRepository.findAllByDateBetween(date1,date2);
+  }
+
+  @Override
+  public Double totalOfOrders(List<Order> orderList) {
+    double total = 0.d;
+    for (Order order: orderList) {
+     total += order.getTotal();
+    }
+    return total;
   }
 
   /*@Override
