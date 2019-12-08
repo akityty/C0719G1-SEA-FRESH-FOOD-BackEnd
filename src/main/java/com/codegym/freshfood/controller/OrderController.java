@@ -90,7 +90,7 @@ public class OrderController {
     return new ResponseEntity<List<Order>>(orderList,HttpStatus.OK);
   }
   //c
-  @PreAuthorize("hasRole('ADMIN'or'USER')")
+  @PreAuthorize("hasRole('ADMIN') or hasRole ('USER')")
   @PutMapping("/editStatus/{orderId}")
   public ResponseEntity editStatus(@PathVariable Long orderId){
     Optional<Order> order = orderService.findById(orderId);

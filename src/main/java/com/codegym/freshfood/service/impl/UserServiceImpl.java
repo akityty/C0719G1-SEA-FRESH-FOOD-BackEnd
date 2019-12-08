@@ -4,6 +4,7 @@ import com.codegym.freshfood.model.signinSignup.User;
 import com.codegym.freshfood.repository.UserRepository;
 import com.codegym.freshfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,5 +40,9 @@ public class UserServiceImpl implements UserService {
   @Override
   public void delete(User user) {
     userRepository.delete(user);
+  }
+
+  @Override
+  public void deleteUserRole() {
   }
 }
