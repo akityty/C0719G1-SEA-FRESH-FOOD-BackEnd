@@ -91,9 +91,9 @@ public class OrderController {
   }
   //c
   @PreAuthorize("hasRole('ADMIN') or hasRole ('USER')")
-  @PutMapping("/editStatus/{orderId}")
-  public ResponseEntity editStatus(@PathVariable Long orderId){
-    Optional<Order> order = orderService.findById(orderId);
+  @PutMapping("/edit/{id}")
+  public ResponseEntity editStatus(@PathVariable Long id){
+    Optional<Order> order = orderService.findById(id);
     if(order.isPresent()){
       orderService.editStatus(order.get());
       return new ResponseEntity(HttpStatus.OK);

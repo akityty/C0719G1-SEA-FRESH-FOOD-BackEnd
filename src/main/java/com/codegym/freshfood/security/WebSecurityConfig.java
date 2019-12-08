@@ -70,9 +70,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/role/**").permitAll()
             .antMatchers("/user/**").permitAll()
             .antMatchers("/provider/**").permitAll()
-
-
-
             .anyRequest().authenticated()
             .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
             .and()
