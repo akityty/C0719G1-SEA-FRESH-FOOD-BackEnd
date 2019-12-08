@@ -14,6 +14,7 @@ import com.codegym.freshfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +38,7 @@ public class OrderController {
     return new ResponseEntity(HttpStatus.CREATED);
   }
   //cc
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/list")
   public ResponseEntity<List<Order>> findAllOrder(){
     List<Order> orderList = orderService.findAll();
@@ -55,6 +57,7 @@ public class OrderController {
       return new ResponseEntity<Order>(HttpStatus.NOT_FOUND );
     }
   }
+  @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/update")
   public ResponseEntity updateOrder(@RequestBody Order order){
     Optional<Order> currentOrder = orderService.findById(order.getId());
@@ -80,11 +83,13 @@ public class OrderController {
       return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
   }
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/getOrdersByStatus/{status}")
   public ResponseEntity<List<Order>> getOrdersByStatus(@PathVariable Status status){
     List<Order> orderList = orderService.findAllByStatus(status);
     return new ResponseEntity<List<Order>>(orderList,HttpStatus.OK);
   }
+  @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/editStatus/{orderId}")
   public ResponseEntity editStatus(@PathVariable Long orderId){
     Optional<Order> order = orderService.findById(orderId);
@@ -95,6 +100,7 @@ public class OrderController {
       return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
   }
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/getOrdersByDate")
   public ResponseEntity<List<Order>> getOrdersByDate(@RequestBody DateForm dateForm){
     List<Order> orderList = orderService.findAllByDateBetween(dateForm.getFirstDate(),dateForm.getLastDate());
@@ -104,6 +110,7 @@ public class OrderController {
       return new ResponseEntity<List<Order>>(HttpStatus.NOT_FOUND);
     }
   }
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/getTotalByOrders")
   public ResponseEntity<Double> getTotalByOrders(@RequestBody DateForm dateForm) {
     List<Order> orderList = orderService.findAllByDateBetween(dateForm.getFirstDate(),dateForm.getLastDate());
