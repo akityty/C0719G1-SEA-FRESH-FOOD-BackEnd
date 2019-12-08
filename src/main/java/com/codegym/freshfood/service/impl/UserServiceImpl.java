@@ -1,5 +1,7 @@
 package com.codegym.freshfood.service.impl;
 
+import com.codegym.freshfood.model.signinSignup.Role;
+import com.codegym.freshfood.model.signinSignup.RoleName;
 import com.codegym.freshfood.model.signinSignup.User;
 import com.codegym.freshfood.repository.UserRepository;
 import com.codegym.freshfood.security.services.UserDetailsServiceImpl;
@@ -9,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class UserServiceImpl implements UserService {
   @Autowired
@@ -45,9 +48,19 @@ public class UserServiceImpl implements UserService {
     userRepository.delete(user);
   }
 
-/*  @Override
+  @Override
   public void deleteUserRole() {
     User user = userDetailsService.getCurrentUser();
-    user.setRoles();
-  }*/
+    Role newRole = new Role();
+    Set<Role> roles = user.getRoles();
+    for (Role role: roles) {
+      if(role.getName().equals(RoleName.ROLE_USER)){
+        newRole = role;
+      }
+    }
+    roles.remove(newRole);
+    user.setRoles(roles);
+    userRepository.save(user);
+  }
+
 }

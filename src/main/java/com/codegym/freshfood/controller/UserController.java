@@ -52,4 +52,9 @@ public class UserController {
         userService.delete(user);
         return new ResponseEntity(HttpStatus.OK);
     }
+    @PutMapping("/deleteUserRole")
+    public ResponseEntity deleteUserRole(){
+        userService.deleteUserRole();
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }
