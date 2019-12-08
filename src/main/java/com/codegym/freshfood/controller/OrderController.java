@@ -89,6 +89,7 @@ public class OrderController {
     List<Order> orderList = orderService.findAllByStatus(status);
     return new ResponseEntity<List<Order>>(orderList,HttpStatus.OK);
   }
+  //c
   @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/editStatus/{orderId}")
   public ResponseEntity editStatus(@PathVariable Long orderId){
