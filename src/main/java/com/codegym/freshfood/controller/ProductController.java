@@ -98,7 +98,7 @@ public class ProductController {
    //chuc nang cua KH
     @GetMapping("/findAllByName")
     public ResponseEntity<List<Product>> findAllByName(@RequestParam String name) {
-       List<Product> productList = productService.findAllByName(name);
+       List<Product> productList = productService.findAllByNameContaining(name);
         if (!productList.isEmpty()) {
             return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);
         }else {

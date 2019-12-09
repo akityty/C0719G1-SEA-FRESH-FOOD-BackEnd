@@ -14,7 +14,7 @@ public interface ProductService {
   Optional<Product> findById(Long id);
   void delete(Long id);
   List<Product> getAllByCategoryId(Long id);
-  List<Product> findAllByName(String name);
+  List<Product> findAllByNameContaining(String name);
   List<Product> findAllByOrigin(String origin);
   List<Product> findAllByPriceBetween(Double price, Double price2);
 }

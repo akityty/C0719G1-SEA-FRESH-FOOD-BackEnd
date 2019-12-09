@@ -53,8 +53,8 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public List<Product> findAllByName(String name) {
-    return productRepository.findAllByName(name);
+  public List<Product> findAllByNameContaining(String name) {
+    return productRepository.findAllByNameContaining(name);
   }
 
   @Override
