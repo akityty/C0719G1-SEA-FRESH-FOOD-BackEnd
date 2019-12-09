@@ -5,6 +5,7 @@ import com.codegym.freshfood.service.ProviderService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping(value = "/provider", produces = "application/x-www-form-urlencoded;charset=UTF-8")
+@RequestMapping(value = "/provider", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProviderController {
     @Autowired
     private ProviderService providerService;

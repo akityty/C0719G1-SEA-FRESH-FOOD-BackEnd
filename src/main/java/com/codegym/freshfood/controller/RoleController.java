@@ -4,6 +4,7 @@ import com.codegym.freshfood.model.signinSignup.Role;
 import com.codegym.freshfood.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping(value = "/role", produces = "application/x-www-form-urlencoded;charset=UTF-8")
+@RequestMapping(value = "/role", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RoleController {
     @Autowired
     RoleService roleService;

@@ -13,6 +13,7 @@ import com.codegym.freshfood.service.OrderService;
 import com.codegym.freshfood.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,10 @@ import java.util.Optional;
 // cc
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+/*
 @RequestMapping(value = "/order", produces = "application/x-www-form-urlencoded;charset=UTF-8")
+*/
+@RequestMapping(value = "/order", produces = MediaType.APPLICATION_JSON_VALUE)
 public class OrderController {
   @Autowired
   OrderService orderService;
