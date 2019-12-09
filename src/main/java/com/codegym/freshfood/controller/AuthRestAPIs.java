@@ -29,7 +29,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(value = "/api/auth", produces = "application/x-www-form-urlencoded;charset=UTF-8")
 public class AuthRestAPIs {
 
   @Autowired

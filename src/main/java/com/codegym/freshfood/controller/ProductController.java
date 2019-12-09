@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/product")
+@RequestMapping(value = "/product", produces = "application/x-www-form-urlencoded;charset=UTF-8")
 public class ProductController {
     @Autowired
     private ProductService productService;

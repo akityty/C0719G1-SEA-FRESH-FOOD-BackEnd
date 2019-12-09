@@ -24,7 +24,7 @@ import java.util.Optional;
 // cc
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/order")
+@RequestMapping(value = "/order", produces = "application/x-www-form-urlencoded;charset=UTF-8")
 public class OrderController {
   @Autowired
   OrderService orderService;

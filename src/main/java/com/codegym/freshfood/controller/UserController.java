@@ -19,7 +19,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/user")
+@RequestMapping(value = "/user", produces = "application/x-www-form-urlencoded;charset=UTF-8")
 public class UserController {
     @Autowired
     RoleService roleService;

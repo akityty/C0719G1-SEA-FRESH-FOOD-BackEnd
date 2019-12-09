@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/role")
+@RequestMapping(value = "/role", produces = "application/x-www-form-urlencoded;charset=UTF-8")
 public class RoleController {
     @Autowired
     RoleService roleService;

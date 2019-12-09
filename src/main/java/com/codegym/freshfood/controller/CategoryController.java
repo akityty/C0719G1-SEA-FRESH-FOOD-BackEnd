@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/category")
+@RequestMapping(value = "/category", produces = "application/x-www-form-urlencoded;charset=UTF-8")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;

@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/comment")
+@RequestMapping(value = "/comment", produces = "application/x-www-form-urlencoded;charset=UTF-8")
 public class CommentController {
     @Autowired
     ProductService productService;

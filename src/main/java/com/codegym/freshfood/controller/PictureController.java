@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/picture")
+@RequestMapping(value = "/picture", produces = "application/x-www-form-urlencoded;charset=UTF-8")
 public class PictureController {
   @Autowired
   PictureService pictureService;
