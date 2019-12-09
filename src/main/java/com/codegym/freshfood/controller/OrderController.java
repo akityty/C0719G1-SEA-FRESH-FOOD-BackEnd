@@ -102,7 +102,7 @@ public class OrderController {
     }
   }
   @PreAuthorize("hasRole('ADMIN')")
-  @GetMapping("/getOrdersByDate")
+  @PostMapping("/getOrdersByDate")
   public ResponseEntity<List<Order>> getOrdersByDate(@RequestBody DateForm dateForm){
     List<Order> orderList = orderService.findAllByDateBetween(dateForm.getFirstDate(),dateForm.getLastDate());
     if(!orderList.isEmpty()){
